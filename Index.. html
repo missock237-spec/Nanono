@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Text → Video (Offline)</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b0b0b;
+  color: white;
+}
+
+/* Interface */
+#editor {
+  padding: 20px;
+  background: #111;
+}
+
+textarea {
+  width: 100%;
+  height: 120px;
+  background: #000;
+  color: #0f0;
+  border: 1px solid #333;
+  padding: 10px;
+  font-size: 16px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 12px 20px;
+  font-size: 16px;
+  background: #00ffaa;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #00cc88;
+}
+
+/* Zone vidéo */
+#video {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 220px);
+  overflow: hidden;
+  background: black;
+}
+
+/* Scène */
+.scene {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3em;
+  text-align: center;
+  opacity: 0;
+  animation: playScene 4s ease-in-out forwards;
+}
+
+/* Animation scène */
+@keyframes playScene {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="editor">
+  <h2>Text → Video (Offline)</h2>
+  <p>Écris ton texte (une phrase = une scène)</p>
+
+  <textarea id="textInput" placeholder="Exemple :
+Bienvenue sur ma chaîne
+Aujourd’hui une nouvelle idée
+Transformer du texte en vidéo"></textarea>
+
+  <button onclick="generateVideo()">Générer la vidéo</button>
+</div>
+
+<div id="video"></div>
+
+<script>
+function generateVideo() {
+  const video = document.getElementById("video");
+  video.innerHTML = "";
+
+  const text = document.getElementById("textInput").value;
+  const lines = text.split("\n").filter(l => l.trim() !== "");
+
+  let delay = 0;
+
+  lines.forEach(line => {
+    const scene = document.createElement("div");
+    scene.className = "scene";
+    scene.textContent = line;
+    scene.style.animationDelay = delay + "s";
+    video.appendChild(scene);
+
+    delay += 4;
+  });
+}
+</script>
+
+</body>
+</html>
